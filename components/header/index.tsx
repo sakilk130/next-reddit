@@ -1,15 +1,19 @@
 import {
-  Bars3Icon,
-  BellIcon,
-  ChatBubbleLeftIcon,
   ChevronDownIcon,
-  GlobeAltIcon,
   HomeIcon,
-  MagnifyingGlassIcon,
+  SearchIcon,
+  MenuIcon,
+} from "@heroicons/react/solid";
+import {
+  BellIcon,
+  ChatIcon,
+  GlobeIcon,
   PlusIcon,
   SparklesIcon,
+  SpeakerphoneIcon,
   VideoCameraIcon,
-} from "@heroicons/react/24/solid";
+} from "@heroicons/react/outline";
+
 import { signIn, signOut, useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
@@ -31,7 +35,7 @@ const Header = () => {
       </div>
       <div className="flex flex-1 items-center bg-gray-200 p-2 gap-2 rounded-sm">
         <form className="flex gap-2 flex-1">
-          <MagnifyingGlassIcon className="h-5 w-5" />
+          <SearchIcon className="h-5 w-5" />
           <input
             type="text"
             className="flex-1 w-full bg-transparent border-none outline-none"
@@ -43,12 +47,13 @@ const Header = () => {
 
       <div className="mx-5 hidden items-center space-x-2 text-gray-500 lg:inline-flex">
         <SparklesIcon className="icon" />
-        <GlobeAltIcon className="icon" />
+        <GlobeIcon className="icon" />
         <VideoCameraIcon className="icon" />
         <hr className="h-10 border border-gray-100" />
-        <ChatBubbleLeftIcon className="icon" />
+        <ChatIcon className="icon" />
         <BellIcon className="icon" />
         <PlusIcon className="icon" />
+        <SpeakerphoneIcon className="icon" />
       </div>
       <div className="hidden lg:flex border px-2 py-1 cursor-pointer">
         {data ? (
@@ -87,7 +92,7 @@ const Header = () => {
       </div>
 
       <div className="mx-5 flex items-center lg:hidden">
-        <Bars3Icon className="icon" />
+        <MenuIcon className="icon" />
       </div>
     </div>
   );
