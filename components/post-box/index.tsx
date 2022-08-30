@@ -1,8 +1,12 @@
+import { useMutation } from "@apollo/client";
 import { PhotographIcon } from "@heroicons/react/outline";
 import { LinkIcon } from "@heroicons/react/solid";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
+import client from "../../apollo-client";
+import { ADD_POST, ADD_SUBREDDIT } from "../../graphql/mutations";
+import { GET_SUBREDDIT_BY_TOPIC } from "../../graphql/queries";
 import Avatar from "../avater";
 
 interface IFormData {
@@ -15,6 +19,8 @@ interface IFormData {
 const PostBox = () => {
   const { data: session } = useSession();
   const [isImageBoxOpen, setIsImageBoxOpen] = useState(false);
+  const [insertSubreddit] = useMutation(ADD_SUBREDDIT);
+  const [insertPost] = useMutation(ADD_POST);
 
   const {
     register,
@@ -23,8 +29,53 @@ const PostBox = () => {
     formState: { errors, isSubmitting },
   } = useForm<IFormData>();
 
-  const onSubmit: SubmitHandler<IFormData> = async (data) => console.log(data);
-  console.log(watch("title"));
+  const onSubmit: SubmitHandler<IFormData> = async (data) => {
+    try {
+      const {
+        data: { getSubredditListByTopic },
+      } = await client.query({
+        query: GET_SUBREDDIT_BY_TOPIC,
+        variables: {
+          topic: data.subreddit,
+        },
+      });
+      if (getSubredditListByTopic.length === 0) {
+        const {
+          data: { insertSubreddit: newSubreddit },
+        } = await insertSubreddit({
+          variables: {
+            topic: data.subreddit,
+          },
+        });
+        const {
+          data: { insertPost: newPost },
+        } = await insertPost({
+          variables: {
+            title: data.title,
+            body: data.body,
+            image: data.image || "",
+            subreddit_id: newSubreddit.id,
+            username: session?.user?.name,
+          },
+        });
+      } else {
+        const {
+          data: { insertPost: newPost },
+        } = await insertPost({
+          variables: {
+            title: data.title,
+            body: data.body,
+            image: data.image || "",
+            subreddit_id: getSubredditListByTopic[0].id,
+            username: session?.user?.name,
+          },
+        });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <form
       className="sticky top-16 z-50 rounded-md border border-gray-300 bg-white p-2"
