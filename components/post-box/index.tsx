@@ -1,9 +1,9 @@
-import { useSession } from "next-auth/react";
-import React, { useState } from "react";
-import Avatar from "../avater";
 import { PhotographIcon } from "@heroicons/react/outline";
 import { LinkIcon } from "@heroicons/react/solid";
+import { useSession } from "next-auth/react";
+import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
+import Avatar from "../avater";
 
 interface IFormData {
   title: string;
@@ -15,7 +15,7 @@ interface IFormData {
 const PostBox = () => {
   const { data: session } = useSession();
   const [isImageBoxOpen, setIsImageBoxOpen] = useState(false);
-  const [isSubredditBoxOpen, setIsSubredditBoxOpen] = useState(false);
+
   const {
     register,
     handleSubmit,
@@ -46,10 +46,7 @@ const PostBox = () => {
           className="h-6 w-6 cursor-pointer hover:bg-gray-100 hover:rounded-full"
           onClick={() => setIsImageBoxOpen(!isImageBoxOpen)}
         />
-        <LinkIcon
-          className="h-6 w-6 cursor-pointer hover:bg-gray-100 hover:rounded-full"
-          onClick={() => setIsSubredditBoxOpen(!isSubredditBoxOpen)}
-        />
+        <LinkIcon className="h-6 w-6 cursor-pointer hover:bg-gray-100 hover:rounded-full" />
       </div>
       {watch("title") && (
         <>
@@ -61,18 +58,8 @@ const PostBox = () => {
               placeholder="Text (Optional)"
             />
           </div>
+
           {isImageBoxOpen && (
-            <div className="flex mt-2 items-center">
-              <label className="min-w-[90px]">Subreddit</label>
-              <input
-                {...register("subreddit", { required: false })}
-                type="text"
-                className="w-full bg-gray-100 outline-none p-2"
-                placeholder="i.g /r/react"
-              />
-            </div>
-          )}
-          {isSubredditBoxOpen && (
             <div className="flex mt-2 items-center">
               <label className="min-w-[90px]">Image URL</label>
               <input
@@ -81,6 +68,27 @@ const PostBox = () => {
                 className="w-full bg-gray-100 outline-none p-2"
                 placeholder="Optional"
               />
+            </div>
+          )}
+          <div className="flex mt-2 items-center">
+            <label className="min-w-[90px]">Subreddit</label>
+            <input
+              {...register("subreddit", { required: true })}
+              type="text"
+              className="w-full bg-gray-100 outline-none p-2"
+              placeholder="i.g /r/react"
+            />
+          </div>
+
+          {Object.keys(errors).length > 0 && (
+            <div className="space-y-2 p-2 text-red-500">
+              {errors.title?.type === "required" && (
+                <p>- A Post Title is required</p>
+              )}
+
+              {errors.subreddit?.type === "required" && (
+                <p>- A Subreddit is required</p>
+              )}
             </div>
           )}
           <div>
