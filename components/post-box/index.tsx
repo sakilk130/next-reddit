@@ -4,6 +4,7 @@ import { LinkIcon } from "@heroicons/react/solid";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
+import toast from "react-hot-toast";
 import client from "../../apollo-client";
 import { ADD_POST, ADD_SUBREDDIT } from "../../graphql/mutations";
 import { GET_SUBREDDIT_BY_TOPIC } from "../../graphql/queries";
@@ -30,6 +31,7 @@ const PostBox = () => {
   } = useForm<IFormData>();
 
   const onSubmit: SubmitHandler<IFormData> = async (data) => {
+    const notifier = toast.loading("Creating post...");
     try {
       const {
         data: { getSubredditListByTopic },
@@ -71,7 +73,13 @@ const PostBox = () => {
           },
         });
       }
+      toast.success("Post created!", {
+        id: notifier,
+      });
     } catch (error) {
+      toast.error("Error creating post!", {
+        id: notifier,
+      });
       console.log(error);
     }
   };
