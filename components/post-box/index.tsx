@@ -7,7 +7,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import client from "../../apollo-client";
 import { ADD_POST, ADD_SUBREDDIT } from "../../graphql/mutations";
-import { GET_SUBREDDIT_BY_TOPIC } from "../../graphql/queries";
+import { GET_ALL_POSTS, GET_SUBREDDIT_BY_TOPIC } from "../../graphql/queries";
 import Avatar from "../avater";
 
 interface IFormData {
@@ -21,7 +21,9 @@ const PostBox = () => {
   const { data: session } = useSession();
   const [isImageBoxOpen, setIsImageBoxOpen] = useState(false);
   const [insertSubreddit] = useMutation(ADD_SUBREDDIT);
-  const [insertPost] = useMutation(ADD_POST);
+  const [insertPost] = useMutation(ADD_POST, {
+    refetchQueries: [GET_ALL_POSTS, "getPostList"],
+  });
 
   const {
     register,
