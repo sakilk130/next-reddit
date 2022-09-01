@@ -28,6 +28,7 @@ const PostBox = () => {
     handleSubmit,
     watch,
     formState: { errors, isSubmitting },
+    reset,
   } = useForm<IFormData>();
 
   const onSubmit: SubmitHandler<IFormData> = async (data) => {
@@ -73,6 +74,7 @@ const PostBox = () => {
           },
         });
       }
+      reset();
       toast.success("Post created!", {
         id: notifier,
       });
@@ -90,7 +92,9 @@ const PostBox = () => {
       onSubmit={handleSubmit(onSubmit)}
     >
       <div className="flex items-center space-x-3">
-        <Avatar />
+        <Avatar
+          url={`https://avatars.dicebear.com/api/human/${session?.user?.name}.svg`}
+        />
         <input
           {...register("title", { required: true })}
           className="w-full px-2 h-10 outline-none bg-gray-100"
