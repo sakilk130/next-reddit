@@ -17,7 +17,11 @@ interface IFormData {
   subreddit: string;
 }
 
-const PostBox = () => {
+interface IPostBoxProps {
+  subreddit?: string;
+}
+
+const PostBox = ({ subreddit }: IPostBoxProps) => {
   const { data: session } = useSession();
   const [isImageBoxOpen, setIsImageBoxOpen] = useState(false);
   const [insertSubreddit] = useMutation(ADD_SUBREDDIT);
@@ -41,7 +45,7 @@ const PostBox = () => {
       } = await client.query({
         query: GET_SUBREDDIT_BY_TOPIC,
         variables: {
-          topic: data.subreddit,
+          topic: subreddit || data.subreddit,
         },
       });
       if (getSubredditListByTopic.length === 0) {
@@ -106,6 +110,7 @@ const PostBox = () => {
               ? `${session?.user?.name} what's up`
               : `Please login`
           }`}
+          disabled={!session?.user?.name}
         />
         <PhotographIcon
           className="h-6 w-6 cursor-pointer hover:bg-gray-100 hover:rounded-full"
@@ -135,15 +140,18 @@ const PostBox = () => {
               />
             </div>
           )}
-          <div className="flex mt-2 items-center">
-            <label className="min-w-[90px]">Subreddit</label>
-            <input
-              {...register("subreddit", { required: true })}
-              type="text"
-              className="w-full bg-gray-100 outline-none p-2"
-              placeholder="i.g /r/react"
-            />
-          </div>
+
+          {!subreddit && (
+            <div className="flex mt-2 items-center">
+              <label className="min-w-[90px]">Subreddit</label>
+              <input
+                {...register("subreddit", { required: true })}
+                type="text"
+                className="w-full bg-gray-100 outline-none p-2"
+                placeholder="i.g /r/react"
+              />
+            </div>
+          )}
 
           {Object.keys(errors).length > 0 && (
             <div className="space-y-2 p-2 text-red-500">

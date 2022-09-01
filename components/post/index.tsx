@@ -7,6 +7,7 @@ import {
 } from "@heroicons/react/outline";
 import { ArrowNarrowDownIcon, ArrowNarrowUpIcon } from "@heroicons/react/solid";
 import moment from "moment";
+import Link from "next/link";
 import { IPost } from "../../interfaces";
 import Avatar from "../avater";
 
@@ -32,7 +33,11 @@ const Post = ({ post }: IPostProps) => {
             small={true}
             url={`https://avatars.dicebear.com/api/human/${post.username}.svg`}
           />
-          <p className="font-bold">{post.subreddit?.topic}</p>
+          <Link href={`/subreddit/${post.subreddit.topic}`}>
+            <p className="font-bold hover:text-blue-600">
+              {post.subreddit?.topic}
+            </p>
+          </Link>
           <p className="text-sm font-thin">
             - Posted by {post.username}{" "}
             {moment(new Date(post.created_at)).startOf("hour").fromNow()}
