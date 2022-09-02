@@ -92,3 +92,13 @@ export const GET_SUBREDDIT_BY_TOPIC = gql`
     }
   }
 `;
+
+export const GET_VOTE_BY_POST_ID = gql`
+  query MyQuery($id: ID!) {
+    getVoteUsingPost_id(id: $id) {
+      id
+      upvote
+      username
+    }
+  }
+`;

@@ -39,6 +39,10 @@ const PostPage = () => {
   } = useForm<IFormData>();
 
   const onSubmit: SubmitHandler<IFormData> = async (data) => {
+    if (!session) {
+      toast.error("You must be logged in to comment");
+      return;
+    }
     const notifier = toast.loading("Submitting comment...");
     try {
       await insertComment({
@@ -98,7 +102,9 @@ const PostPage = () => {
             )}
             <button
               type="submit"
-              className="w-full p-2 bg-orange-500 text-white rounded-md mt-1"
+              className={`w-full p-2 bg-orange-500 text-white rounded-md mt-1 ${
+                !session ? "opacity-50" : ""
+              }`}
               disabled={!session || isSubmitting}
             >
               {isSubmitting ? "Loading..." : "Comment"}
