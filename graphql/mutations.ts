@@ -58,3 +58,11 @@ export const ADD_VOTE = gql`
     }
   }
 `;
+
+export const DELETE_VOTE_BY_ID = gql`
+  mutation MyMutation($id: ID!) {
+    deleteVote(id: $id) {
+      id
+    }
+  }
+`;

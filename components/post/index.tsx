@@ -12,7 +12,7 @@ import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import { ADD_VOTE } from "../../graphql/mutations";
+import { ADD_VOTE, DELETE_VOTE_BY_ID } from "../../graphql/mutations";
 import { GET_VOTE_BY_POST_ID } from "../../graphql/queries";
 import { IPost, IVote } from "../../interfaces";
 import Avatar from "../avater";
@@ -24,6 +24,7 @@ interface IPostProps {
 const Post = ({ post }: IPostProps) => {
   const { data: session } = useSession();
   const [vote, setVote] = useState<boolean>();
+  const [voteId, setVoteId] = useState<number>(0);
 
   const { data, loading } = useQuery(GET_VOTE_BY_POST_ID, {
     variables: {
@@ -33,6 +34,7 @@ const Post = ({ post }: IPostProps) => {
   const [addVote] = useMutation(ADD_VOTE, {
     refetchQueries: [GET_VOTE_BY_POST_ID, "getVoteUsingPost_id"],
   });
+  const [deleteVote] = useMutation(DELETE_VOTE_BY_ID);
 
   const upVoteHandler = async (isVote: boolean) => {
     if (!session) {
@@ -50,6 +52,23 @@ const Post = ({ post }: IPostProps) => {
     }
     const notifier = toast.loading("Upvoting...");
     try {
+      if (vote === true && !isVote) {
+        await deleteVote({
+          variables: {
+            id: voteId,
+          },
+        });
+        setVote(false);
+        setVoteId(0);
+      } else if (vote === false && isVote) {
+        await deleteVote({
+          variables: {
+            id: voteId,
+          },
+        });
+        setVote(false);
+        setVoteId(0);
+      }
       await addVote({
         variables: {
           post_id: post.id,
@@ -73,8 +92,10 @@ const Post = ({ post }: IPostProps) => {
         if (vote.username === session?.user?.name) {
           if (vote.upvote) {
             setVote(true);
+            setVoteId(vote.id);
           } else {
             setVote(false);
+            setVoteId(vote.id);
           }
         }
       });
