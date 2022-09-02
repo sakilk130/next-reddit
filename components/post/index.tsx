@@ -6,7 +6,6 @@ import {
   ShareIcon,
 } from "@heroicons/react/outline";
 import { ArrowNarrowDownIcon, ArrowNarrowUpIcon } from "@heroicons/react/solid";
-import { DotSpinner } from "@uiball/loaders";
 import moment from "moment";
 import Link from "next/link";
 import { IPost } from "../../interfaces";
@@ -17,16 +16,9 @@ interface IPostProps {
 }
 
 const Post = ({ post }: IPostProps) => {
-  if (!post)
-    return (
-      <div className="flex w-full items-center justify-center p-10 text-xl">
-        <DotSpinner size={50} color="#FF4501" />
-      </div>
-    );
-
   return (
     <Link href={`/post/${post.id}`}>
-      <div className="flex gap-2 border border-gray-400 shadow-sm bg-white mt-6 p-3 rounded-lg hover:border-2 hover:cursor-pointer">
+      <div className="flex gap-2 border shadow-sm bg-white mt-6 p-3 rounded-lg hover:cursor-pointer">
         <div className="flex flex-col items-center">
           <div className="hover:bg-gray-300 p-1">
             <ArrowNarrowUpIcon className="h-6 w-6 cursor-pointer text-gray-500" />
