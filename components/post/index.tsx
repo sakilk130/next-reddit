@@ -6,6 +6,7 @@ import {
   ShareIcon,
 } from "@heroicons/react/outline";
 import { ArrowNarrowDownIcon, ArrowNarrowUpIcon } from "@heroicons/react/solid";
+import { DotSpinner } from "@uiball/loaders";
 import moment from "moment";
 import Link from "next/link";
 import { IPost } from "../../interfaces";
@@ -16,65 +17,74 @@ interface IPostProps {
 }
 
 const Post = ({ post }: IPostProps) => {
+  if (!post)
+    return (
+      <div className="flex w-full items-center justify-center p-10 text-xl">
+        <DotSpinner size={50} color="#FF4501" />
+      </div>
+    );
+
   return (
-    <div className="flex gap-2 border border-gray-400 shadow-sm bg-white mt-6 p-3 rounded-lg hover:border-2 hover:cursor-pointer">
-      <div className="flex flex-col items-center">
-        <div className="hover:bg-gray-300 p-1">
-          <ArrowNarrowUpIcon className="h-6 w-6 cursor-pointer text-gray-500" />
+    <Link href={`/post/${post.id}`}>
+      <div className="flex gap-2 border border-gray-400 shadow-sm bg-white mt-6 p-3 rounded-lg hover:border-2 hover:cursor-pointer">
+        <div className="flex flex-col items-center">
+          <div className="hover:bg-gray-300 p-1">
+            <ArrowNarrowUpIcon className="h-6 w-6 cursor-pointer text-gray-500" />
+          </div>
+          <p>{post.voteList.length}</p>
+          <div className="hover:bg-gray-300 p-1">
+            <ArrowNarrowDownIcon className="h-6 w-6 cursor-pointer text-gray-500" />
+          </div>
         </div>
-        <p>{post.voteList.length}</p>
-        <div className="hover:bg-gray-300 p-1">
-          <ArrowNarrowDownIcon className="h-6 w-6 cursor-pointer text-gray-500" />
-        </div>
-      </div>
-      <div className="flex flex-col gap-4">
-        <div className="flex items-center gap-2">
-          <Avatar
-            small={true}
-            url={`https://avatars.dicebear.com/api/human/${post.username}.svg`}
-          />
-          <Link href={`/subreddit/${post.subreddit.topic}`}>
-            <p className="font-bold hover:text-blue-600">
-              {post.subreddit?.topic}
+        <div className="flex flex-col gap-4">
+          <div className="flex items-center gap-2">
+            <Avatar
+              small={true}
+              url={`https://avatars.dicebear.com/api/human/${post.username}.svg`}
+            />
+            <Link href={`/subreddit/${post.subreddit.topic}`}>
+              <p className="font-bold hover:text-blue-600">
+                {post.subreddit?.topic}
+              </p>
+            </Link>
+            <p className="text-sm font-thin">
+              - Posted by {post.username}{" "}
+              {moment(new Date(post.created_at)).startOf("hour").fromNow()}
             </p>
-          </Link>
-          <p className="text-sm font-thin">
-            - Posted by {post.username}{" "}
-            {moment(new Date(post.created_at)).startOf("hour").fromNow()}
-          </p>
-        </div>
-        <div>
-          <p className="font-bold">{post.title}</p>
-          <p className="text-xs text-gray-800">{post.body}</p>
-        </div>
-        {post.image && (
+          </div>
           <div>
-            <img className="w-full" src={post.image} alt={post.title} />
+            <p className="font-bold">{post.title}</p>
+            <p className="text-xs text-gray-800">{post.body}</p>
           </div>
-        )}
-        <div className="flex items-center gap-3 text-gray-400 ">
-          <div className="flex gap-2 hover:bg-gray-200 p-1 cursor-pointer rounded-sm">
-            <ChatAltIcon className="h-6 w-6" />
-            <p className="hidden sm:inline"> 1 Comments</p>
-          </div>
-          <div className="flex gap-2 hover:bg-gray-200 p-1 cursor-pointer rounded-sm">
-            <GiftIcon className="h-6 w-6" />
-            <p className="hidden sm:inline">Award</p>
-          </div>
-          <div className="flex gap-2 hover:bg-gray-200 p-1 cursor-pointer rounded-sm">
-            <ShareIcon className="h-6 w-6" />
-            <p className="hidden sm:inline">Share</p>
-          </div>
-          <div className="flex gap-2 hover:bg-gray-200 p-1 cursor-pointer rounded-sm">
-            <BookmarkIcon className="h-6 w-6" />
-            <p className="hidden sm:inline">Save</p>
-          </div>
-          <div className="flex gap-2 hover:bg-gray-200 p-1 cursor-pointer rounded-sm">
-            <DotsHorizontalIcon className="h-6 w-6" />
+          {post.image && (
+            <div>
+              <img className="w-full" src={post.image} alt={post.title} />
+            </div>
+          )}
+          <div className="flex items-center gap-3 text-gray-400 ">
+            <div className="flex gap-2 hover:bg-gray-200 p-1 cursor-pointer rounded-sm">
+              <ChatAltIcon className="h-6 w-6" />
+              <p className="hidden sm:inline"> 1 Comments</p>
+            </div>
+            <div className="flex gap-2 hover:bg-gray-200 p-1 cursor-pointer rounded-sm">
+              <GiftIcon className="h-6 w-6" />
+              <p className="hidden sm:inline">Award</p>
+            </div>
+            <div className="flex gap-2 hover:bg-gray-200 p-1 cursor-pointer rounded-sm">
+              <ShareIcon className="h-6 w-6" />
+              <p className="hidden sm:inline">Share</p>
+            </div>
+            <div className="flex gap-2 hover:bg-gray-200 p-1 cursor-pointer rounded-sm">
+              <BookmarkIcon className="h-6 w-6" />
+              <p className="hidden sm:inline">Save</p>
+            </div>
+            <div className="flex gap-2 hover:bg-gray-200 p-1 cursor-pointer rounded-sm">
+              <DotsHorizontalIcon className="h-6 w-6" />
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </Link>
   );
 };
 

@@ -27,6 +27,33 @@ export const GET_ALL_POSTS = gql`
     }
   }
 `;
+export const GET_POST_BY_ID = gql`
+  query MyQuery($id: ID!) {
+    getPost(id: $id) {
+      id
+      body
+      title
+      username
+      image
+      created_at
+      subreddit {
+        id
+        topic
+      }
+      commentList {
+        created_at
+        id
+        text
+        username
+      }
+      voteList {
+        id
+        upvote
+        username
+      }
+    }
+  }
+`;
 
 export const GET_POST_BY_SUBREDDIT = gql`
   query MyQuery($subreddit: String!) {
