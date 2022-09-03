@@ -138,6 +138,16 @@ type Query {
       table: "subreddit"
       configuration: "postgresql_config"
     )
+  getSubredditsWithLimit(limit: Int!): [Subreddit]
+    @dbquery(
+      type: "postgresql"
+      query: """
+      select * from "subreddit"
+      order by "created_at" desc
+      limit $1
+      """
+      configuration: "postgresql_config"
+    )
   getPostUsingSubreddit_id(id: ID!): [Post]
     @dbquery(
       type: "postgresql"

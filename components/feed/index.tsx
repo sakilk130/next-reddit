@@ -1,4 +1,5 @@
 import { useQuery } from "@apollo/client";
+import { DotSpinner } from "@uiball/loaders";
 import { GET_ALL_POSTS, GET_POST_BY_SUBREDDIT } from "../../graphql/queries";
 import { IPost } from "../../interfaces";
 import Post from "../post";
@@ -15,11 +16,20 @@ const Feed = ({ subreddit }: IFeedProps) => {
       })
     : useQuery(GET_ALL_POSTS);
   const posts = data?.getPostList || data?.getPostListBySubreddit;
-  console.log(data);
+
+  if (loading) {
+    return (
+      <div className="flex w-full items-center justify-center p-10 text-xl">
+        <DotSpinner size={50} color="#FF4501" />
+      </div>
+    );
+  }
+
   return (
     <div>
-      {!loading &&
-        posts?.map((post: IPost) => <Post key={post.id} post={post} />)}
+      {posts?.map((post: IPost) => (
+        <Post key={post.id} post={post} />
+      ))}
     </div>
   );
 };
