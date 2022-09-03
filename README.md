@@ -1,27 +1,44 @@
-# Next.js + Tailwind CSS Example
+# Reddit using Next.js and GraphQL
 
-This example shows how to use [Tailwind CSS](https://tailwindcss.com/) [(v3.0)](https://tailwindcss.com/blog/tailwindcss-v3) with Next.js. It follows the steps outlined in the official [Tailwind docs](https://tailwindcss.com/docs/guides/nextjs).
+## About
 
-## Deploy your own
+Simple Reddit clone with [Next.js](https://nextjs.org/) and [Apollo GraphQL](https://www.apollographql.com/)
 
-Deploy the example using [Vercel](https://vercel.com?utm_source=github&utm_medium=readme&utm_campaign=next-example) or preview live with [StackBlitz](https://stackblitz.com/github/vercel/next.js/tree/canary/examples/with-tailwindcss)
+## 1. Getting Started
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/git/external?repository-url=https://github.com/vercel/next.js/tree/canary/examples/with-tailwindcss&project-name=with-tailwindcss&repository-name=with-tailwindcss)
+First clone this repository.
 
-## How to use
-
-Execute [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app) with [npm](https://docs.npmjs.com/cli/init), [Yarn](https://yarnpkg.com/lang/en/docs/cli/create/), or [pnpm](https://pnpm.io) to bootstrap the example:
-
-```bash
-npx create-next-app --example with-tailwindcss with-tailwindcss-app
+```
+git clone https://github.com/sakilk130/next-reddit.git
 ```
 
-```bash
-yarn create next-app --example with-tailwindcss with-tailwindcss-app
+Install dependencies. Make sure you already have [`nodejs`](https://nodejs.org/en/) & [`yarn`](https://yarnpkg.com/) installed in your system.
+
+```
+yarn
 ```
 
-```bash
-pnpm create next-app --example with-tailwindcss with-tailwindcss-app
+Copy .env.example to .env.local and fill all the values.
+
+```
+cp .env.example .env.local
 ```
 
-Deploy it to the cloud with [Vercel](https://vercel.com/new?utm_source=github&utm_medium=readme&utm_campaign=next-example) ([Documentation](https://nextjs.org/docs/deployment)).
+Run the development server:
+
+```
+yarn dev
+```
+
+## Screenshot of the Web App
+
+![](public/images/image.png)
+
+## Built with
+
+- <a href="https://nextjs.org/">Next.js</a>
+- <a href="https://www.typescriptlang.org/">TypeScript</a>
+- <a href="https://www.apollographql.com/">Apollo GraphQL</a>
+- <a href="https://next-auth.js.org/">Next Auth</a>
+- <a href="https://app.supabase.com/">Supabase (Database Manager)</a>
+- <a href="https://stepzen.com/">StepZen (GraphQl as a service)</a>
