@@ -152,7 +152,10 @@ const Post = ({ post }: IPostProps) => {
           <div className="flex items-center gap-3 text-gray-400 ">
             <div className="flex gap-2 hover:bg-gray-200 p-1 cursor-pointer rounded-sm">
               <ChatAltIcon className="h-6 w-6" />
-              <p className="hidden sm:inline"> 1 Comments</p>
+              <p className="hidden sm:inline">
+                {" "}
+                {post.commentList.length} Comments
+              </p>
             </div>
             <div className="flex gap-2 hover:bg-gray-200 p-1 cursor-pointer rounded-sm">
               <GiftIcon className="h-6 w-6" />
